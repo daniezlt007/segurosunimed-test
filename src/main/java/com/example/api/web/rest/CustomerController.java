@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.example.api.domain.dto.CustomerDTO;
 import com.example.api.repository.specifications.CustomerSpecification;
+import com.example.api.service.ViaCepClient;
+import com.example.api.service.ViaCepService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +26,9 @@ public class CustomerController {
 
 	@Autowired
 	private CustomerServiceImpl service;
+
+	@Autowired
+	private ViaCepService viaCepClient;
 
 	@GetMapping
 	public ResponseEntity<?> findAll(
@@ -74,6 +79,11 @@ public class CustomerController {
 	public ResponseEntity<?> edit(@PathVariable("id") Long id) {
 		this.service.delete(id);
 		return ResponseEntity.ok().build();
+	}
+
+	@GetMapping("/cep/{cep}")
+	public ResponseEntity<?> buscaCep(@PathVariable("cep") String cep){
+		return ResponseEntity.ok(this.viaCepClient.buscarEndereco(cep));
 	}
 
 }

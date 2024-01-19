@@ -18,6 +18,4 @@ public interface CustomerService {
     public Customer edit(CustomerDTO customerDTO);
     public void delete(Long id);
 
-
-
 }

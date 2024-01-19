@@ -19,12 +19,14 @@ public class CustomerDTO {
     private String name;
     private String email;
     private String gender;
+    private List<AddressDTO> addressDTOS;
 
     public CustomerDTO(Customer customer){
         this.id = customer.getId();
         this.name = customer.getName();
         this.email = customer.getEmail();
         this.gender = customer.getGender();
+        this.addressDTOS = AddressDTO.converter(customer.getAddresses());
     }
 
     public static List<CustomerDTO> converter(List<Customer> customerList){

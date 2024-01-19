@@ -1,8 +1,10 @@
 package com.example.api.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.api.domain.dto.AddressDTO;
 import com.example.api.domain.dto.CustomerDTO;
 import com.example.api.exceptions.BussinessException;
 import com.example.api.exceptions.ResourceNotFoundException;
@@ -23,6 +25,9 @@ public class CustomerServiceImpl implements CustomerService {
 	@Autowired
 	private CustomerRepository repository;
 
+	@Autowired
+	private ViaCepService viaCepService;
+
 	@Override
 	public Page<Customer> findAll(Specification<Customer> spec, Pageable pageable) {
 		return repository.findAll(spec,pageable);
@@ -39,29 +44,46 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public Customer save(CustomerDTO customerDTO) {
-		if(customerDTO != null){
-			Customer save = this.repository.save(new Customer(customerDTO));
-			if(save != null){
-				return save;
-			} else {
-				throw new BussinessException("Problem is save - save");
+		if (customerDTO == null) {
+			throw new BussinessException("Object is required for save");
+		}
+		List<AddressDTO> addressDTOList = customerDTO.getAddressDTOS();
+		List<AddressDTO> addressDTOSSave = new ArrayList<>();
+		for (AddressDTO addressDTO : addressDTOList) {
+			AddressDTO addressdtoCep = viaCepService.buscarEndereco(addressDTO.getCep());
+			if(addressDTO != null){
+				addressDTOSSave.add(addressDTO);
 			}
+		}
+		customerDTO.setAddressDTOS(addressDTOSSave);
+		Customer customerToSave = new Customer(customerDTO);
+		Customer savedCustomer = repository.save(customerToSave);
+
+		if (savedCustomer != null) {
+			return savedCustomer;
 		} else {
-			throw new BussinessException("Object is required for save - save");
+			throw new BussinessException("Problem in save - save");
 		}
 	}
 
 	@Override
 	public Customer edit(CustomerDTO customerDTO) {
-		if(customerDTO != null){
-			Customer save = this.repository.save(new Customer(customerDTO));
-			if(save != null){
-				return save;
-			} else {
-				throw new BussinessException("Problem is save - save");
-			}
+		if (customerDTO == null) {
+			throw new BussinessException("Object is required for edit");
+		}
+		Customer existingCustomer = repository.findById(customerDTO.getId())
+				.orElseThrow(() -> new ResourceNotFoundException("Customer not found."));
+
+		existingCustomer.setName(customerDTO.getName());
+		existingCustomer.setEmail(customerDTO.getEmail());
+		existingCustomer.setGender(customerDTO.getGender());
+
+		Customer savedCustomer = repository.save(existingCustomer);
+
+		if (savedCustomer != null) {
+			return savedCustomer;
 		} else {
-			throw new BussinessException("Object is required for save - save");
+			throw new BussinessException("Problem in save - edit");
 		}
 	}
 
