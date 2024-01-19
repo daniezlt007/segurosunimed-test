@@ -76,14 +76,10 @@ public class CustomerController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<?> edit(@PathVariable("id") Long id) {
+	public ResponseEntity<?> delete(@PathVariable("id") Long id) {
 		this.service.delete(id);
 		return ResponseEntity.ok().build();
 	}
 
-	@GetMapping("/cep/{cep}")
-	public ResponseEntity<?> buscaCep(@PathVariable("cep") String cep){
-		return ResponseEntity.ok(this.viaCepClient.buscarEndereco(cep));
-	}
 
 }

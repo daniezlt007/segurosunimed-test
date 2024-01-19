@@ -66,7 +66,7 @@ public class AddressController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> edit(@PathVariable("id") Long id) {
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         this.addressService.delete(id);
         return ResponseEntity.ok().build();
     }
