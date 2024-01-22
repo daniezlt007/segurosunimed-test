@@ -47,7 +47,7 @@ public class Customer {
 		this.name = customerDTO.getName();
 		this.email = customerDTO.getEmail();
 		this.gender = customerDTO.getGender();
-		this.addresses = Address.converter(customerDTO.getAddressDTOS());
+		this.addresses = new ArrayList<>();
 	}
 
 	public static List<Customer> converter(List<CustomerDTO> customerList){

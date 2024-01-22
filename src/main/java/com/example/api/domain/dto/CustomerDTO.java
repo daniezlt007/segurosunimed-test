@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,7 @@ public class CustomerDTO {
         this.name = customer.getName();
         this.email = customer.getEmail();
         this.gender = customer.getGender();
-        this.addressDTOS = AddressDTO.converter(customer.getAddresses());
+        this.addressDTOS = new ArrayList<>();
     }
 
     public static List<CustomerDTO> converter(List<Customer> customerList){

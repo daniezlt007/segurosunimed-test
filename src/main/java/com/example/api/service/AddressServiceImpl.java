@@ -62,6 +62,7 @@ public class AddressServiceImpl implements AddressService {
 
         existingAddress.setLogradouro(addressDTO.getLogradouro());
         existingAddress.setComplemento(addressDTO.getComplemento());
+        existingAddress.setNumero(addressDTO.getNumero());
         existingAddress.setBairro(addressDTO.getBairro());
         existingAddress.setLocalidade(addressDTO.getLocalidade());
         existingAddress.setUf(addressDTO.getUf());

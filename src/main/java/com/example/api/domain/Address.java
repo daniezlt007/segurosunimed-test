@@ -23,17 +23,15 @@ public class Address {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(nullable = false)
     @NotEmpty
     private String cep;
-
     @Column(nullable = false)
     @NotEmpty
     private String logradouro;
-
     private String complemento;
 
+    private String numero;
     @Column(nullable = false)
     @NotEmpty
     private String bairro;
@@ -67,6 +65,7 @@ public class Address {
         this.cep = addressDTO.getCep();
         this.logradouro = addressDTO.getLogradouro();
         this.complemento = addressDTO.getComplemento();
+        this.numero = addressDTO.getNumero();
         this.bairro = addressDTO.getBairro();
         this.localidade = addressDTO.getLocalidade();
         this.uf = addressDTO.getUf();

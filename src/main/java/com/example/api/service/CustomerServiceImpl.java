@@ -47,15 +47,18 @@ public class CustomerServiceImpl implements CustomerService {
 		if (customerDTO == null) {
 			throw new BussinessException("Object is required for save");
 		}
-		List<AddressDTO> addressDTOList = customerDTO.getAddressDTOS();
+		Long idLong = this.repository.maxIdCustomer();
+		customerDTO.setId(idLong++);
 		List<AddressDTO> addressDTOSSave = new ArrayList<>();
-		for (AddressDTO addressDTO : addressDTOList) {
-			AddressDTO addressdtoCep = viaCepService.buscarEndereco(addressDTO.getCep());
-			if(addressDTO != null){
-				addressDTOSSave.add(addressDTO);
+		if(customerDTO.getAddressDTOS() != null){
+			for (AddressDTO addressDTO : customerDTO.getAddressDTOS()) {
+				AddressDTO addressdtoCep = viaCepService.buscarEndereco(addressDTO.getCep());
+				if(addressDTO != null){
+					addressDTOSSave.add(addressdtoCep);
+				}
 			}
 		}
-		customerDTO.setAddressDTOS(addressDTOSSave);
+		customerDTO.setAddressDTOS(!addressDTOSSave.isEmpty() ? addressDTOSSave : null);
 		Customer customerToSave = new Customer(customerDTO);
 		Customer savedCustomer = repository.save(customerToSave);
 
